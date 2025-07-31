@@ -1,16 +1,21 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import ProductList from './components/ProductList';
-import ProductDetail from './components/ProductDetail';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import DepartmentPage from "./components/DepartmentPage";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import DepartmentList from "./components/DepartmentList";
 
 function App() {
   return (
-    <div className="container mt-4">
-      <Routes>
-        <Route path="/" element={<ProductList />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
-      </Routes>
-    </div>
+    <Router>
+      <div className="layout">
+        <DepartmentList />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/departments/:id" element={<DepartmentPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

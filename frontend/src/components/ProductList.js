@@ -1,28 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { getProducts } from '../api';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-const ProductList = () => {
-  const [products, setProducts] = useState([]);
+function DepartmentList() {
+  const [departments, setDepartments] = useState([]);
 
   useEffect(() => {
-    getProducts().then(data => setProducts(data));
+    fetch("/api/departments")
+      .then((res) => res.json())
+      .then((data) => setDepartments(data.departments));
   }, []);
 
   return (
     <div>
-      <h2>Product List</h2>
-      <ul className="list-group">
-        {products.map(product => (
-          <li className="list-group-item" key={product.id}>
-            <Link to={`/product/${product.id}`}>
-              {product.name} - ₹{product.price}
-            </Link>
+      <h3>Departments</h3>
+      <ul>
+        {departments.map((dept) => (
+          <li key={dept.id}>
+            <Link to={`/departments/${dept.id}`}>{dept.name} ({dept.product_count})</Link>
           </li>
         ))}
       </ul>
     </div>
   );
-};
+}
 
-export default ProductList;
+export default DepartmentList;

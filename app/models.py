@@ -14,3 +14,10 @@ class Product(db.Model):
     price = db.Column(db.Float)
     description = db.Column(db.String(500))
     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
+    department_id = db.Column(db.Integer, db.ForeignKey("department.id"), nullable=False)
+
+class Department(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    products = db.relationship("Product", backref="department", lazy=True)
+

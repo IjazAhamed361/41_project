@@ -1,24 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getProductById } from '../api';
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import ProductCard from "./ProductCard";
 
-const ProductDetail = () => {
+function DepartmentPage() {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
+  const [department, setDepartment] = useState(null);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    getProductById(id).then(data => setProduct(data));
+    fetch(`/api/departments/${id}`)
+      .then((res) => res.json())
+      .then((data) => setDepartment(data));
+
+    fetch(`/api/departments/${id}/products`)
+      .then((res) => res.json())
+      .then((data) => setProducts(data.products || []));
   }, [id]);
 
-  if (!product) return <p>Loading...</p>;
+  if (!department) return <p>Loading...</p>;
 
   return (
     <div>
-      <h2>{product.name}</h2>
-      <p><strong>Price:</strong> ₹{product.price}</p>
-      <p><strong>Description:</strong> {product.description}</p>
+      <h2>{department.name} ({products.length} products)</h2>
+      <Link to="/">← Back to All Products</Link>
+      <div className="product-grid">
+        {products.map((p) => (
+          <ProductCard key={p.id} product={p} />
+        ))}
+      </div>
     </div>
   );
-};
+}
 
-export default ProductDetail;
+export default DepartmentPage;
