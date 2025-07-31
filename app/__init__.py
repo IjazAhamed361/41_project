@@ -7,11 +7,13 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'  # Or your DB URI
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from app.models import Product, Department  # import all models before migrating
+    from app.routes.department_routes import department_bp
+    app.register_blueprint(department_bp)
 
     return app
