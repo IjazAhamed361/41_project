@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { getProductById } from '../api';
 
-function ProductDetail() {
+const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/api/products/${id}`)
-      .then(res => res.json())
-      .then(data => setProduct(data));
+    getProductById(id).then(data => setProduct(data));
   }, [id]);
 
   if (!product) return <p>Loading...</p>;
@@ -16,12 +15,10 @@ function ProductDetail() {
   return (
     <div>
       <h2>{product.name}</h2>
-      <p><strong>Category:</strong> {product.category}</p>
       <p><strong>Price:</strong> ₹{product.price}</p>
-      <p><strong>Stock:</strong> {product.stock}</p>
-      <Link to="/" className="btn btn-secondary mt-3">Back to Products</Link>
+      <p><strong>Description:</strong> {product.description}</p>
     </div>
   );
-}
+};
 
 export default ProductDetail;

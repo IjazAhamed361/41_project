@@ -1,33 +1,28 @@
 import React, { useEffect, useState } from 'react';
+import { getProducts } from '../api';
 import { Link } from 'react-router-dom';
 
-function ProductList() {
+const ProductList = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/api/products')
-      .then(res => res.json())
-      .then(data => setProducts(data));
+    getProducts().then(data => setProducts(data));
   }, []);
 
   return (
     <div>
-      <h2>All Products</h2>
-      <div className="row">
+      <h2>Product List</h2>
+      <ul className="list-group">
         {products.map(product => (
-          <div className="col-md-4 mb-3" key={product.id}>
-            <div className="card p-3">
-              <h5>{product.name}</h5>
-              <p>₹{product.price}</p>
-              <Link to={`/product/${product.id}`} className="btn btn-primary">
-                View Details
-              </Link>
-            </div>
-          </div>
+          <li className="list-group-item" key={product.id}>
+            <Link to={`/product/${product.id}`}>
+              {product.name} - ₹{product.price}
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
-}
+};
 
 export default ProductList;

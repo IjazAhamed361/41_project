@@ -1,18 +1,17 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
 
 function App() {
   return (
-    <Router>
+    <div className="container mt-4">
       <Routes>
         <Route path="/" element={<ProductList />} />
         <Route path="/product/:id" element={<ProductDetail />} />
       </Routes>
-    </Router>
+    </div>
   );
 }
 
 export default App;
-
